@@ -1,0 +1,300 @@
+#customerBTN>a,#itemBTN>a,#orderBTN>a,#homeBtn>a{
+    color: #8b0000;
+}
+#nav{
+    height: 60px;
+}
+.homePageImg{
+position: absolute;
+width: 100vw;
+height: 100vh;
+left: 0;
+right: 0;
+}
+#formFrame1, #formFrame2, #formFrame3 {
+    position: relative;
+    margin: auto;
+    top: 80px;
+}
+.base{
+    position: relative;
+}
+.mainSlider{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -40%;
+    bottom: 0;
+    margin: auto;
+    height: 300px;
+    width: 500px;
+    overflow: hidden;
+}
+.slider{
+    position: relative;
+    height: 100%;
+    width: 400%;
+    display: flex;
+    animation-name: animate;
+    animation-duration: 10s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+@keyframes animate {
+    0%,20%{
+        transform: translateX(0%);
+    }25%,45%{
+         transform: translateX(-25%);
+     }50%,70%{
+          transform: translateX(-50%);
+      }75%,100%{
+           transform: translateX(-75%);
+       }
+}
+.slider>div{
+    width: 100%;
+}
+.slider>div:nth-child(1){
+    background: url("img/1.png");
+    background-size: cover;
+    position: center;
+}
+.slider>div:nth-child(2){
+    background: url("img/2.png");
+    background-size: cover;
+    position: center;
+}
+.slider>div:nth-child(3){
+    background: url("img/3.png");
+    background-size: cover;
+    position: center;
+}
+.slider>div:nth-child(4){
+    background: url("img/6.png");
+    background-size: cover;
+    position: center;
+}
+/*================*/
+.homePageLbls{
+    height: 265px;
+    width: 1200px;
+    display: flex;
+    flex-direction: row;
+    top: 55vh;
+    left: -32px;
+    position: relative;
+}
+.homePageLbls>div{
+    background-color: peru;
+    align-items: center;
+    position: relative;
+    margin-left: 20px;
+    opacity: 50%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 6px 2px;
+}
+.homePageLbls>div>h1{
+    position: relative;
+    top: -86px;
+    left: 120px;
+    color: darkred;
+}
+.homePageLbls>div>h2{
+    position: relative;
+    left: 66px;
+    top: -30px;
+    font-size: 80px;
+}
+#logoutIcon {
+    color: #8b0000;
+!important;
+}
+
+.btnFrame {
+    position: relative;
+    margin: auto;
+    top: 100px;
+/ / width: 48.666667 %;
+}
+
+/*.saveBtn,.updateBtn{
+    width: 177px;
+}*/
+#SearchFormFrame1, #SearchFormFrame2, #SearchFormFrame3 {
+    position: relative;
+    margin: auto;
+    top: 80px;
+}
+
+.dltTxt {
+    color: #161B36;
+    position: relative;
+    top: -45px;
+    font-size: 13px;
+}
+
+.tempOrderPrice {
+    position: relative;
+    top: 15px;
+}
+
+/*#sep2 {
+    height: 2px;
+    width: 282px;
+    left: 30px;
+    top: -70px;
+    position: relative;
+}*/
+
+#searchField {
+    position: relative;
+    top: -20px;
+}
+
+#dltLabel, #dltLabel2 {
+    font-size: 16px;
+}
+/*#dltLabel3{
+    font-size: 16px;
+    top: -70px;
+}*/
+#tableFrame1, #tableFrame2, #tableFrame3 {
+    position: relative;
+    margin: auto;
+    top: 120px;
+
+}
+
+.f1 {
+    padding-top: 0px;
+}
+
+.f1 > label {
+    font-size: 12px;
+}
+
+.f2 {
+    padding-top: 20px;
+}
+
+.btn1, .btn2, .btn3 {
+    margin-top: 10px;
+}
+
+.dltBtn, .itemDeleteBtn{
+    position: relative;
+    top: 28px;
+}
+
+.f3 {
+    padding-top: 0px;
+}
+
+.f4 {
+    position: relative;
+    top: -11px;
+    margin-top: 20px;
+}
+
+#sampleBTN {
+    color: white;
+}
+
+#ulNAV > li {
+    color: white;
+}
+
+#ulNAV > li:hover {
+    cursor: pointer;
+}
+
+.tbl > tr:hover {
+    cursor: pointer;
+    background-color: #74b9ff;
+}
+
+.orderAddBtn{
+    position: relative;
+    top: 40px;
+}
+/*.orderDeleteArea{
+    position: relative;
+    top: 80px;
+}*/
+.OrderDltBtn{
+    top: 60px;
+    position: relative;
+}
+.purchaseArea{
+    position: relative;
+    top: 0px;
+    left: 60px;
+}
+.dateLbl{
+   right: 40px;
+    position: relative;
+}
+.orderIdDropDown{
+    top: 15px;
+}
+.dropDownArea{
+    top: -30px;
+}
+@media all and  (max-device-width: 1024px) {
+    #logoutIcon{
+        display: none;
+    }
+    .collapsBtn{
+        position: relative;
+        left: -70px;
+    }
+    .logo{
+        font-size: 17px;
+    }
+    #SearchFormFrame1, #SearchFormFrame2, #SearchFormFrame3 {
+        top: 130px;
+    }
+
+    .dltTxt {
+        top: 20px;
+    !important;
+    }
+
+    .dltBtn, .itemDeleteBtn {
+        top: 20px;
+    }
+
+    #tableFrame1, #tableFrame2,#tableFrame3 {
+        top: 170px;
+    }
+    #searchField{
+        top: 20px;
+    }
+    #sep2{
+        display: none;
+    }
+    .dateLbl{
+        display: none;
+    }
+    .homePageLbls{
+        height: 300px;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        top: 400px;
+        left: -32px;
+        position: relative;
+    }
+    .homePageLbls>div {
+        margin-top: 20px;
+    }
+    .mainSlider{
+        width: 320px;
+    }
+    .homePageImg{
+        height: 190%;
+    }
+    #navbarNavDropdown{
+        background-color: #242C54;
+    }
+}

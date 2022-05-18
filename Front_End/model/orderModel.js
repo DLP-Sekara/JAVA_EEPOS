@@ -1,4 +1,4 @@
-function OrderObject(oID,date,custName,totalPrice,cash,discount,orderDetail) {
+ function OrderObject(oID,date,custName,totalPrice,cash,discount,orderDetail) {
     this.oID= oID;
     this.date= date;
     this.custName= custName;

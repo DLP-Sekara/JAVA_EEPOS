@@ -130,44 +130,58 @@ $(".btn1").click(function () {
 })
 
 function saveCustomer() {
+    var custNic=$("#txtCustNic").val();
     var serialize=$("#formFrame1").serialize();
-    console.log(serialize)
-    $.ajax({
-        url: "http://localhost:8080/java_EE_pos/customer",
-        method: "POST",
-        data: serialize,
-        success: function (resp) {
-            alert("successfully added");
-        },
-        error:function (ob, textStatus, error) {
-            alert(ob);
-            alert(textStatus);
-            alert(error);
-        }
-    })
-   /* if (customerAvailability(custNic)) {
+
+    if (customerAvailability(custNic)) {
         alert("Customer Already Exists")
     } else {
-        var customerObj = new CustomerObject(custNic, custName, custAddress, custContact);
-        customer.push(customerObj);
-        addCustomerToTable();
-        clearTextField();
-        //console.log(customer);
-        $("#saveBtn").attr('disabled', true);
-
-        $("#tbl1>tr").dblclick(function () {
-            $(this).remove();
+        $.ajax({
+            url: "http://localhost:8080/java_EE_pos/customer",
+            method: "POST",
+            data: serialize,
+            success: function (resp) {
+                /*  if(resp.status==200){
+                      alert(resp.message);
+                      addCustomerToTable();
+                  }else{
+                      alert(resp.data);
+                  }*/
+                alert("successfully added");
+                addCustomerToTable();
+                clearTextField();
+                $("#saveBtn").attr('disabled', true);
+            },
+            error:function (ob, textStatus, error) {
+                alert(ob);
+                alert(textStatus);
+                alert(error);
+            }
         })
-
-    }*/
+    }
 }
 
 function customerAvailability(custNic) {
-    for (var i = 0; i < customer.length; i++) {
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method:"GET",
+        success: function (resp) {
+            $("#tbl1").empty();
+            var tempArry=resp.data;
+            console.log(tempArry);
+            for (var i = 0; i < tempArry.length; i++) {
+                if (tempArry[i].id == custNic) {
+                    return true;
+            }
+        }
+
+    }
+})
+    /*for (var i = 0; i < customer.length; i++) {
         if (customer[i].id == custNic) {
             return true;
         }
-    }
+    }*/
 }
 
 function addCustomerToTable() {
@@ -177,7 +191,7 @@ function addCustomerToTable() {
         success: function (resp) {
             $("#tbl1").empty();
             for (const customer of resp.data) {
-                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
+                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.contact}</td></tr>`;
                 $("#tbl1").append(row);
             }
             tblClick();

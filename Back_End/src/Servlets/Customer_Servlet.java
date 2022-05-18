@@ -40,7 +40,7 @@ public class Customer_Servlet extends HttpServlet {
                 objectBuilder.add("id",id);
                 objectBuilder.add("name",name);
                 objectBuilder.add("address",address);
-                objectBuilder.add("salary",contact);
+                objectBuilder.add("contact",contact);
 
                 arrayBuilder.add(objectBuilder.build());
             }
@@ -77,26 +77,28 @@ public class Customer_Servlet extends HttpServlet {
             boolean b = stm.executeUpdate() > 0;
 
             if (b){
-              /*  JsonObjectBuilder response = Json.createObjectBuilder();
+                JsonObjectBuilder response = Json.createObjectBuilder();
                 resp.setStatus(HttpServletResponse.SC_OK);
                 response.add("status",200);
-                response.add("message","Done");
-                response.add("data","hhhffff");
+                response.add("message","Customer Successfully Added");
+                response.add("data","");
+                writer.print(response.build());
+/*
 
-                writer.print(response.build());*/
-                writer.print("succesfully added customer");
-
+                writer.print(response.build());
+                writer.print("successfully added customer");
+*/
             }
             con.close();
         } catch (SQLException throwables) {
-            /*resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_OK);
             JsonObjectBuilder response = Json.createObjectBuilder();
             response.add("status",400);
             response.add("message","Error");
             response.add("data",throwables.getLocalizedMessage());
-
             writer.print(response.build());
-            throwables.printStackTrace();*/
+
+            throwables.printStackTrace();
         }
     }
 }

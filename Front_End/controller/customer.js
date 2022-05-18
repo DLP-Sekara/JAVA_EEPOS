@@ -154,26 +154,7 @@ function saveCustomer() {
         clearTextField();
         //console.log(customer);
         $("#saveBtn").attr('disabled', true);
-        $("#tbl1>tr").click(function () {
-            $("#saveBtn").attr('disabled', true);
-            let custID = $(this).children().eq(0).text();
-            let custName = $(this).children().eq(1).text();
-            let custAddrress = $(this).children().eq(2).text();
-            let custContact = $(this).children().eq(3).text();
-            tempCustomer = custID;
-            $(".txtNIC").val(custID);
-            $(".txtNAME").val(custName);
-            $(".txtADDRESS").val(custAddrress);
-            $(".txtCONTACT").val(custContact);
 
-            $(".txtCustNicUp").val(custID);
-            $(".txtCustNameUp").val(custName);
-            $(".txtCustAddressUp").val(custAddrress);
-            $(".txtCustContactUp").val(custContact);
-
-            $(".updateBtn").attr('disabled', false);
-            $(".dltBtn").attr('disabled', false);
-        })
         $("#tbl1>tr").dblclick(function () {
             $(this).remove();
         })
@@ -190,13 +171,41 @@ function customerAvailability(custNic) {
 }
 
 function addCustomerToTable() {
-    $("#tbl1").empty();
-    for (var i = 0; i < customer.length; i++) {
-        let row1 = `<tr><td>${customer[i].id}</td><td>${customer[i].name}</td><td>${customer[i].address}</td><td>${customer[i].contact}</td></tr>`;
-        $("#tbl1").append(row1);
-    }
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method:"GET",
+        success: function (resp) {
+            $("#tbl1").empty();
+            for (const customer of resp.data) {
+                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
+                $("#tbl1").append(row);
+            }
+            tblClick();
+        }
+    })
 }
+function tblClick() {
+    $("#tbl1>tr").click(function () {
+        $("#saveBtn").attr('disabled', true);
+        let custID = $(this).children().eq(0).text();
+        let custName = $(this).children().eq(1).text();
+        let custAddrress = $(this).children().eq(2).text();
+        let custContact = $(this).children().eq(3).text();
+        tempCustomer = custID;
+        $(".txtNIC").val(custID);
+        $(".txtNAME").val(custName);
+        $(".txtADDRESS").val(custAddrress);
+        $(".txtCONTACT").val(custContact);
 
+        $(".txtCustNicUp").val(custID);
+        $(".txtCustNameUp").val(custName);
+        $(".txtCustAddressUp").val(custAddrress);
+        $(".txtCustContactUp").val(custContact);
+
+        $(".updateBtn").attr('disabled', false);
+        $(".dltBtn").attr('disabled', false);
+    })
+}
 function clearTextField() {
     $(".txtNIC").val("");
     $(".txtNAME").val("");

@@ -2,6 +2,7 @@ package Servlets;
 
 import javax.annotation.Resource;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/customer")
@@ -22,7 +24,37 @@ public class Customer_Servlet extends HttpServlet {
     DataSource ds;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            resp.setContentType("application/json");
+            Connection connection = ds.getConnection();
+            ResultSet rst=connection.prepareStatement("Select * from Customer").executeQuery();
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
+            while (rst.next()){
+                String id = rst.getString(1);
+                String name = rst.getString(2);
+                String address = rst.getString(3);
+                String contact = rst.getString(4);
+
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("id",id);
+                objectBuilder.add("name",name);
+                objectBuilder.add("address",address);
+                objectBuilder.add("salary",contact);
+
+                arrayBuilder.add(objectBuilder.build());
+            }
+            PrintWriter writer = resp.getWriter();
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",200);
+            response.add("message","Done");
+            response.add("data",arrayBuilder.build());
+
+            writer.print(response.build());
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

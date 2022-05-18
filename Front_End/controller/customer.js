@@ -127,16 +127,25 @@ function btnAction1() {
 
 $(".btn1").click(function () {
     saveCustomer();
-
 })
 
 function saveCustomer() {
-    let custNic = $(".txtNIC").val();
-    let custName = $(".txtNAME").val();
-    let custAddress = $(".txtADDRESS").val();
-    let custContact = $(".txtCONTACT").val();
-
-    if (customerAvailability(custNic)) {
+    var serialize=$("#formFrame1").serialize();
+    console.log(serialize)
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method: "POST",
+        data: serialize,
+        success: function (resp) {
+            alert("successfully added");
+        },
+        error:function (ob, textStatus, error) {
+            alert(ob);
+            alert(textStatus);
+            alert(error);
+        }
+    })
+   /* if (customerAvailability(custNic)) {
         alert("Customer Already Exists")
     } else {
         var customerObj = new CustomerObject(custNic, custName, custAddress, custContact);
@@ -168,8 +177,8 @@ function saveCustomer() {
         $("#tbl1>tr").dblclick(function () {
             $(this).remove();
         })
-        console.log(customer);
-    }
+
+    }*/
 }
 
 function customerAvailability(custNic) {

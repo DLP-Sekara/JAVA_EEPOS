@@ -365,36 +365,33 @@ $(".dltBtn").click(function () {
     var temp = $(".txtCustNicUp").val();
         if (confirm("Are you sure you want to delete this?")) {
             deleteCustomer(temp);
-            clearTextField();
-            addCustomerToTable();
-            $("#tbl1>tr").click(function () {
-                $("#saveBtn").attr('disabled', true);
-                let custID = $(this).children().eq(0).text();
-                let custName = $(this).children().eq(1).text();
-                let custAddrress = $(this).children().eq(2).text();
-                let custContact = $(this).children().eq(3).text();
-                tempCustomer = custID;
-                $(".txtNIC").val(custID);
-                $(".txtNAME").val(custName);
-                $(".txtADDRESS").val(custAddrress);
-                $(".txtCONTACT").val(custContact);
-
-                $(".txtCustNicUp").val(custID);
-                $(".txtCustNameUp").val(custName);
-                $(".txtCustAddressUp").val(custAddrress);
-                $(".txtCustContactUp").val(custContact);
-
-                $(".updateBtn").attr('disabled', false);
-                $(".dltBtn").attr('disabled', false);
-            })
         }
 })
 function deleteCustomer(temp) {
-    for (var i = 0; i < customer.length; i++) {
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer?id=" + temp,
+        method: "DELETE",
+        success: function (resp) {
+            if(resp.status==200){
+                alert(resp.message)
+                clearTextField();
+                addCustomerToTable();
+                tblClick()
+            }else{
+                console.log(resp.data)
+            }
+        },
+        error:function (ob, status, t) {
+            console.log(ob)
+            console.log(status)
+            console.log(t)
+        }
+    })
+    /*for (var i = 0; i < customer.length; i++) {
         if (customer[i].id == temp) {
             customer.splice(i,1);
         }
-    }
+    }*/
 }
 
 //==============others=============//

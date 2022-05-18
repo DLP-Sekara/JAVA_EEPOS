@@ -101,4 +101,37 @@ public class Customer_Servlet extends HttpServlet {
             throwables.printStackTrace();
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String customerID = req.getParameter("id");
+        PrintWriter writer = resp.getWriter();
+        try {
+            Connection con = ds.getConnection();
+            String query="DELETE FROM Customer WHERE CustomerNIC='" + customerID + "'";
+            PreparedStatement stm = con.prepareStatement(query);
+            boolean b = stm.executeUpdate() > 0;
+            resp.setContentType("application/json");
+            if (b){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",200);
+                response.add("message","Successfully deleted");
+                response.add("data","");
+
+                writer.print(response.build());
+
+            }
+            con.close();
+        } catch (SQLException e) {
+            resp.setStatus(200);
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",500);
+            response.add("message","Error");
+            response.add("data",e.getLocalizedMessage());
+
+            writer.print(response.build());
+            e.printStackTrace();
+        }
+
+    }
 }

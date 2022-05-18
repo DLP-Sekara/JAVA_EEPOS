@@ -141,16 +141,18 @@ function saveCustomer() {
             method: "POST",
             data: serialize,
             success: function (resp) {
-                /*  if(resp.status==200){
+                  if(resp.status==200){
                       alert(resp.message);
                       addCustomerToTable();
+                      clearTextField();
+                      $("#saveBtn").attr('disabled', true);
                   }else{
-                      alert(resp.data);
-                  }*/
-                alert("successfully added");
+                      alert(resp.message);
+                  }
+                /*alert("successfully added");
                 addCustomerToTable();
                 clearTextField();
-                $("#saveBtn").attr('disabled', true);
+                $("#saveBtn").attr('disabled', true);*/
             },
             error:function (ob, textStatus, error) {
                 alert(ob);
@@ -239,7 +241,37 @@ function clearTextField() {
 //=============update===============//
 
 $(".updateBtn").click(function () {
-    let custNic = $(".txtNIC").val();
+    var cusOB={
+        "nic":$("#txtCustNic").val(),
+        "name":$("#txtCustName").val(),
+        "address":$("#txtCustAddress").val(),
+        "contact":$("#txtCustContact").val()
+    }
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method: "PUT",
+        contentType:"application/json",
+        data: JSON.stringify(cusOB),
+        success: function (resp) {
+            if(resp.status==200){
+                clearTextField();
+                addCustomerToTable();
+                tblClick();
+                $("#saveBtn").attr('disabled', true);
+                $(".updateBtn").attr('disabled', true);
+                alert(resp.message);
+            }else if (resp.status==400){
+                alert(resp.message);
+            }else{
+                alert(resp.data);
+            }
+
+        },
+        error:function (ob, errorStatus) {
+            console.log(ob)
+        }
+    })
+    /*let custNic = $(".txtNIC").val();
     let custName = $(".txtNAME").val();
     let custAddress = $(".txtADDRESS").val();
     let custContact = $(".txtCONTACT").val();
@@ -249,41 +281,21 @@ $(".updateBtn").click(function () {
 
     clearTextField();
     addCustomerToTable();
-    $("#tbl1>tr").click(function () {
-        $("#saveBtn").attr('disabled', true);
-        let custID = $(this).children().eq(0).text();
-        let custName = $(this).children().eq(1).text();
-        let custAddrress = $(this).children().eq(2).text();
-        let custContact = $(this).children().eq(3).text();
-        tempCustomer = custID;
-        $(".txtNIC").val(custID);
-        $(".txtNAME").val(custName);
-        $(".txtADDRESS").val(custAddrress);
-        $(".txtCONTACT").val(custContact);
-
-        $(".txtCustNicUp").val(custID);
-        $(".txtCustNameUp").val(custName);
-        $(".txtCustAddressUp").val(custAddrress);
-        $(".txtCustContactUp").val(custContact);
-
-        $(".updateBtn").attr('disabled', false);
-        $(".dltBtn").attr('disabled', false);
-
-    })
+    tblClick();
     $("#saveBtn").attr('disabled', true);
     $(".updateBtn").attr('disabled', true);
-    console.log(customer);
+    console.log(customer);*/
 })
 
 function updateCustomer(tempCustomer, customerObj) {
-    for (var i = 0; i < customer.length; i++) {
+   /* for (var i = 0; i < customer.length; i++) {
         if (customer[i].id == tempCustomer) {
             customer[i].id = customerObj.id;
             customer[i].name = customerObj.name;
             customer[i].address = customerObj.address;
             customer[i].contact = customerObj.contact;
         }
-    }
+    }*/
 }
 
 //============search & getAll===========//

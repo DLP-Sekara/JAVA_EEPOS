@@ -1,9 +1,7 @@
 package Servlets;
 
 import javax.annotation.Resource;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -75,7 +73,7 @@ public class Customer_Servlet extends HttpServlet {
             stm.setObject(3,customerAddress);
             stm.setObject(4,customerContact);
             boolean b = stm.executeUpdate() > 0;
-
+            resp.setContentType("application/json");
             if (b){
                 JsonObjectBuilder response = Json.createObjectBuilder();
                 resp.setStatus(HttpServletResponse.SC_OK);
@@ -127,6 +125,60 @@ public class Customer_Servlet extends HttpServlet {
             JsonObjectBuilder response = Json.createObjectBuilder();
             response.add("status",500);
             response.add("message","Error");
+            response.add("data",e.getLocalizedMessage());
+
+            writer.print(response.build());
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        String CustomerNIC = jsonObject.getString("nic");
+        String CustomerName = jsonObject.getString("name");
+        String CustomerAddress = jsonObject.getString("address");
+        String CustomerContact = jsonObject.getString("contact");
+        PrintWriter writer = resp.getWriter();
+        resp.setContentType("application/json");
+        try {
+            Connection con = ds.getConnection();
+            String query="UPDATE Customer set CustomerNIC=?,CustomerName=?,CustomerAddress=?,CustomerContact=? where CustomerNIC='" +CustomerNIC+"'";
+
+            PreparedStatement stm = con.prepareStatement(query);
+            stm.setObject(1,CustomerNIC);
+            stm.setObject(2,CustomerName);
+            stm.setObject(3,CustomerAddress);
+            stm.setObject(4,CustomerContact);
+            boolean b1 = stm.executeUpdate() > 0;
+
+            if (b1){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                response.add("status",200);
+                response.add("message","updated");
+                response.add("data","");
+
+                writer.print(response.build());
+
+            }else{
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                response.add("status",400);
+                response.add("message","update failed");
+                response.add("data","");
+
+                writer.print(response.build());
+
+            }
+            con.close();
+        } catch (SQLException e) {
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            response.add("status",500);
+            response.add("message","update failed");
             response.add("data",e.getLocalizedMessage());
 
             writer.print(response.build());

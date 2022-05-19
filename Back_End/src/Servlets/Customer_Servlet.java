@@ -61,7 +61,7 @@ public class Customer_Servlet extends HttpServlet {
         String customerName = req.getParameter("customerName");
         String customerAddress = req.getParameter("customerAddress");
         String customerContact = req.getParameter("customerContact");
-
+        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         try {
             Connection con = ds.getConnection();
@@ -73,29 +73,22 @@ public class Customer_Servlet extends HttpServlet {
             stm.setObject(3,customerAddress);
             stm.setObject(4,customerContact);
             boolean b = stm.executeUpdate() > 0;
-            resp.setContentType("application/json");
-            if (b){
+            if (b) {
                 JsonObjectBuilder response = Json.createObjectBuilder();
-                resp.setStatus(HttpServletResponse.SC_OK);
-                response.add("status",200);
-                response.add("message","Customer Successfully Added");
-                response.add("data","");
+                resp.setStatus(HttpServletResponse.SC_CREATED);//201
+                response.add("status", 200);
+                response.add("message", "Successfully Added");
+                response.add("data", "");
                 writer.print(response.build());
-/*
-
-                writer.print(response.build());
-                writer.print("successfully added customer");
-*/
             }
             con.close();
         } catch (SQLException throwables) {
-            resp.setStatus(HttpServletResponse.SC_OK);
             JsonObjectBuilder response = Json.createObjectBuilder();
-            response.add("status",400);
-            response.add("message","Error");
-            response.add("data",throwables.getLocalizedMessage());
+            response.add("status", 400);
+            response.add("message", "Error");
+            response.add("data", throwables.getLocalizedMessage());
             writer.print(response.build());
-
+            resp.setStatus(HttpServletResponse.SC_OK); //200
             throwables.printStackTrace();
         }
     }

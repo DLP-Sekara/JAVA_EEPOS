@@ -130,60 +130,76 @@ $(".btn1").click(function () {
 })
 
 function saveCustomer() {
-    var custNic=$("#txtCustNic").val();
-    var serialize=$("#formFrame1").serialize();
+    var custNic = $("#txtCustNic").val();
+    var serialize = $("#formFrame1").serialize();
 
     if (customerAvailability(custNic)) {
         alert("Customer Already Exists")
     } else {
         $.ajax({
-            url: "http://localhost:8080/java_EE_pos/customer",
-            method: "POST",
-            data: serialize,
-            success: function (resp) {
-                  if(resp.status==200){
-                      alert(resp.message);
-                      addCustomerToTable();
-                      clearTextField();
-                      $("#saveBtn").attr('disabled', true);
-                  }else{
-                      alert(resp.message);
-                  }
-                /*alert("successfully added");
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method: "POST",
+        data: serialize,
+            success: function (res) {
+                if (res.status == 200) {
+                    alert(res.message);
+                    addCustomerToTable();
+                    clearTextField();
+                    $("#saveBtn").attr('disabled', true);
+                } else {
+                    alert(res.data);
+                }
+
+            },
+            error: function (ob, textStatus, error) {
+                console.log(ob);
+                console.log(textStatus);
+                console.log(error);
+            }
+        /*success: function (resp) {
+            if (resp.status == 200) {
+                alert(resp.message);
                 addCustomerToTable();
                 clearTextField();
-                $("#saveBtn").attr('disabled', true);*/
-            },
-            error:function (ob, textStatus, error) {
-                alert(ob);
-                alert(textStatus);
-                alert(error);
+                $("#saveBtn").attr('disabled', true);
+            } else if (resp.status == 400) {
+                alert(resp.message);
+            } else {
+                alert(resp.data);
             }
-        })
-    }
+            /!*  alert("successfully added");
+              addCustomerToTable();
+              clearTextField();
+              $("#saveBtn").attr('disabled', true);*!/
+        },
+        error: function (ob, textStatus, error) {
+            alert(ob);
+            alert(textStatus);
+            alert(error);
+        }*/
+    })
+}
 }
 
 function customerAvailability(custNic) {
+    var temp=false;
     $.ajax({
         url: "http://localhost:8080/java_EE_pos/customer",
         method:"GET",
         success: function (resp) {
-            $("#tbl1").empty();
             var tempArry=resp.data;
+
             console.log(tempArry);
             for (var i = 0; i < tempArry.length; i++) {
                 if (tempArry[i].id == custNic) {
-                    return true;
+                    console.log("check availability")
+                    temp= true;
             }
         }
 
     }
 })
-    /*for (var i = 0; i < customer.length; i++) {
-        if (customer[i].id == custNic) {
-            return true;
-        }
-    }*/
+
 }
 
 function addCustomerToTable() {

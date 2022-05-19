@@ -119,49 +119,34 @@ function btnAction2() {
 //=============save===============//
 
 $(".ItemSaveBtn").click(function () {
+    console.log("save click")
     saveItem();
 })
 
 function saveItem() {
-    let itemCode = $("#txtItemCode").val();
-    let itemName = $("#txtItemName").val();
-    let itemPrice = $("#txtItemPrice").val();
-    let itemQuantity = $("#txtItemQuantity").val();
+    var serialize = $("#formFrame2").serialize();
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/item",
+        method: "POST",
+        data: serialize,
+        success: function (res) {
+            if (res.status == 200) {
+                alert(res.message);
+                addItemToTable();
+                clearItemTextField();
+                $(".ItemSaveBtn").attr('disabled', true);
+                tblClick();
+            } else {
+                alert(res.data);
+            }
 
-    if (itemAvailability(itemCode)) {
-        alert("Item Already Exists")
-    } else {
-        var itemObj = new ItemObject(itemCode, itemName, itemPrice, itemQuantity);
-        item.push(itemObj);
-        addItemToTable();
-        clearItemTextField();
-        //console.log(customer);
-        $(".ItemSaveBtn").attr('disabled', true);
-        $("#tbl2>tr").click(function () {
-            $(".ItemSaveBtn").attr('disabled', true);
-            let code = $(this).children().eq(0).text();
-            let itemName = $(this).children().eq(1).text();
-            let price = $(this).children().eq(2).text();
-            let qty = $(this).children().eq(3).text();
-            tempItem = code;
-            $("#txtItemCode").val(code);
-            $("#txtItemName").val(itemName);
-            $("#txtItemPrice").val(price);
-            $("#txtItemQuantity").val(qty);
-
-            $(".tempItemId").val(code);
-            $(".tempItemName").val(itemName);
-            $(".tempItemPrice").val(price);
-            $(".tempItemQty").val(qty);
-
-            $(".ItemUpdateBtn").attr('disabled', false);
-            $(".itemDeleteBtn").attr('disabled', false);
-        })
-        $("#tbl2>tr").dblclick(function () {
-            $(this).remove();
-        })
-
-    }
+        },
+        error: function (ob, textStatus, error) {
+            console.log(ob);
+            console.log(textStatus);
+            console.log(error);
+        }
+    })
 }
 
 function itemAvailability(itemCode) {
@@ -171,7 +156,28 @@ function itemAvailability(itemCode) {
         }
     }
 }
+function tblClick() {
+    $("#tbl2>tr").click(function () {
+        $(".ItemSaveBtn").attr('disabled', true);
+        let code = $(this).children().eq(0).text();
+        let itemName = $(this).children().eq(1).text();
+        let price = $(this).children().eq(2).text();
+        let qty = $(this).children().eq(3).text();
+        tempItem = code;
+        $("#txtItemCode").val(code);
+        $("#txtItemName").val(itemName);
+        $("#txtItemPrice").val(price);
+        $("#txtItemQuantity").val(qty);
 
+        $(".tempItemId").val(code);
+        $(".tempItemName").val(itemName);
+        $(".tempItemPrice").val(price);
+        $(".tempItemQty").val(qty);
+
+        $(".ItemUpdateBtn").attr('disabled', false);
+        $(".itemDeleteBtn").attr('disabled', false);
+    })
+}
 //=============update===============//
 
 $(".ItemUpdateBtn").click(function () {
@@ -274,26 +280,7 @@ function searchItem(temp) {
 $(".itemSeeAllBtn").click(function () {
     clearItemTextField();
     addItemToTable();
-    $("#tbl2>tr").click(function () {
-        $(".ItemSaveBtn").attr('disabled', true);
-        let code = $(this).children().eq(0).text();
-        let itemName = $(this).children().eq(1).text();
-        let price = $(this).children().eq(2).text();
-        let qty = $(this).children().eq(3).text();
-        tempItem = code;
-        $("#txtItemCode").val(code);
-        $("#txtItemName").val(itemName);
-        $("#txtItemPrice").val(price);
-        $("#txtItemQuantity").val(qty);
-
-        $(".tempItemId").val(code);
-        $(".tempItemName").val(itemName);
-        $(".tempItemPrice").val(price);
-        $(".tempItemQty").val(qty);
-
-        $(".ItemUpdateBtn").attr('disabled', false);
-        $(".itemDeleteBtn").attr('disabled', false);
-    })
+    tblClick()
 })
 
 //============delete===========//
@@ -335,11 +322,24 @@ function deleteItem(temp) {
 
 //==============others=============//
 function addItemToTable() {
-    $("#tbl2").empty();
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/item",
+        method:"GET",
+        success: function (resp) {
+            $("#tbl2").empty();
+            for (const item of resp.data) {
+                let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.price}</td><td>${item.qty}</td></tr>`;
+                $("#tbl2").append(row);
+            }
+            tblClick();
+        }
+    })
+
+  /*  $("#tbl2").empty();
     for (var i = 0; i < item.length; i++) {
         let row2 = `<tr><td>${item[i].code}</td><td>${item[i].name}</td><td>${item[i].price}</td><td>${item[i].qty}</td></tr>`;
         $("#tbl2").append(row2);
-    }
+    }*/
 }
 
 function clearItemTextField() {

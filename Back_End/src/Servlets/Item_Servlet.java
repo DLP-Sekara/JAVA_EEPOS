@@ -35,10 +35,10 @@ public class Item_Servlet extends HttpServlet {
                 String qty = rst.getString(4);
 
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("id",code);
+                objectBuilder.add("code",code);
                 objectBuilder.add("name",name);
-                objectBuilder.add("address",price);
-                objectBuilder.add("contact",qty);
+                objectBuilder.add("price",price);
+                objectBuilder.add("qty",qty);
 
                 arrayBuilder.add(objectBuilder.build());
             }
@@ -57,10 +57,11 @@ public class Item_Servlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String itemCode = req.getParameter("ItemCode");
+        String ItemCode = req.getParameter("ItemCode");
         String ItemName = req.getParameter("ItemName");
         String ItemPrice = req.getParameter("ItemPrice");
         String ItemQty = req.getParameter("ItemQty");
+        System.out.println(req);
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         try {
@@ -68,7 +69,7 @@ public class Item_Servlet extends HttpServlet {
             String query="INSERT INTO Item VALUES(?,?,?,?)";
 
             PreparedStatement stm = con.prepareStatement(query);
-            stm.setObject(1,itemCode);
+            stm.setObject(1,ItemCode);
             stm.setObject(2,ItemName);
             stm.setObject(3,ItemPrice);
             stm.setObject(4,ItemQty);

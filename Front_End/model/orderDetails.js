@@ -1,4 +1,4 @@
-function OrderDetails(code,name,price,qty,totalPrice) {
+ function OrderDetails(code,name,price,qty,totalPrice) {
     this.code = code;
     this.name = name;
     this.price = price;

@@ -2,7 +2,6 @@
 $(".saveOrderBtn").attr('disabled', true)
 $(".OrderDltBtn").attr('disabled', true)
 $(".purchaseBtn").attr('disabled', true)
-getCustomerNames();
 var total=0;
 var totalLbl=0;
 var totalLbl2=0;
@@ -198,19 +197,30 @@ function clearOrderDetails() {
 function getCustomerNames() {
    $('.customerSelection').empty();
     $('.customerSelection').append($('<option>', { text:"Select Customer"}));
-    for (var i=0;i<customer.length;i++){
-        $('.customerSelection').append($('<option>', { text:customer[i].name}));
-        console.log(customer[i].name)
-    }
-
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method:"GET",
+        success: function (resp) {
+            console.log(resp.data)
+            for (var i=0;i<resp.data.length;i++) {
+                $('.customerSelection').append($('<option>', { text:resp.data[i].name}));
+            }
+        }
+    })
 }
 function getItemNames() {
    $('.itemSelection').empty();
     $('.itemSelection').append($('<option>', { text:"Select Item"}));
-    for (var i=0;i<item.length;i++){
-        $('.itemSelection').append($('<option>', {text:item[i].name}));
-
-    }
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/item",
+        method:"GET",
+        success: function (resp) {
+            console.log(resp.data)
+            for (var i=0;i<resp.data.length;i++) {
+                $('.itemSelection').append($('<option>', { text:resp.data[i].name}));
+            }
+        }
+    })
 
 }
 

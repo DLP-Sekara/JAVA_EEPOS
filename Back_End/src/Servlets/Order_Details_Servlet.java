@@ -17,8 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/order")
-public class Order_Servlet extends HttpServlet {
+@WebServlet(urlPatterns = "/orderDetails")
+public class Order_Details_Servlet extends HttpServlet {
     @Resource(name="java:comp/env/jdbc/pool")
     DataSource ds;
 
@@ -94,6 +94,5 @@ public class Order_Servlet extends HttpServlet {
             throwables.printStackTrace();
         }
     }
-
 
 }

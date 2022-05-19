@@ -119,7 +119,6 @@ function btnAction2() {
 //=============save===============//
 
 $(".ItemSaveBtn").click(function () {
-    console.log("save click")
     saveItem();
 })
 
@@ -135,7 +134,7 @@ function saveItem() {
                 addItemToTable();
                 clearItemTextField();
                 $(".ItemSaveBtn").attr('disabled', true);
-                tblClick();
+                tblClick2();
             } else {
                 alert(res.data);
             }
@@ -156,7 +155,7 @@ function itemAvailability(itemCode) {
         }
     }
 }
-function tblClick() {
+function tblClick2() {
     $("#tbl2>tr").click(function () {
         $(".ItemSaveBtn").attr('disabled', true);
         let code = $(this).children().eq(0).text();
@@ -196,7 +195,7 @@ $(".ItemUpdateBtn").click(function () {
             if(resp.status==200){
                 clearItemTextField();
                 addItemToTable();
-                tblClick();
+                tblClick2();
                 $(".ItemSaveBtn").attr('disabled', true);
                 $(".ItemUpdateBtn").attr('disabled', true);
                 alert(resp.message);
@@ -266,7 +265,7 @@ function searchItem(temp) {
 $(".itemSeeAllBtn").click(function () {
     clearItemTextField();
     addItemToTable();
-    tblClick()
+    tblClick2()
 })
 
 //============delete===========//
@@ -285,7 +284,7 @@ function deleteItem(temp) {
                 alert(resp.message)
                 clearItemTextField();
                 addItemToTable();
-                tblClick()
+                tblClick2()
             }else{
                 console.log(resp.data)
             }
@@ -309,15 +308,10 @@ function addItemToTable() {
                 let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.price}</td><td>${item.qty}</td></tr>`;
                 $("#tbl2").append(row);
             }
-            tblClick();
+            tblClick2();
         }
     })
 
-  /*  $("#tbl2").empty();
-    for (var i = 0; i < item.length; i++) {
-        let row2 = `<tr><td>${item[i].code}</td><td>${item[i].name}</td><td>${item[i].price}</td><td>${item[i].qty}</td></tr>`;
-        $("#tbl2").append(row2);
-    }*/
 }
 
 function clearItemTextField() {
@@ -340,5 +334,5 @@ function clearItemTextField() {
 $(".ItemRefreshBtn").click(function () {
     clearItemTextField();
     addItemToTable();
-    tblClick();
+    tblClick2();
 })

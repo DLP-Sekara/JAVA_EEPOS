@@ -141,6 +141,7 @@ function saveCustomer() {
                     alert(res.message);
                     addCustomerToTable();
                     clearTextField();
+                    tblClick1()
                     $("#saveBtn").attr('disabled', true);
                 } else {
                     alert(res.data);
@@ -176,23 +177,9 @@ function customerAvailability(custNic) {
 })
 
 }
-
-function addCustomerToTable() {
-    $.ajax({
-        url: "http://localhost:8080/java_EE_pos/customer",
-        method:"GET",
-        success: function (resp) {
-            $("#tbl1").empty();
-            for (const customer of resp.data) {
-                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.contact}</td></tr>`;
-                $("#tbl1").append(row);
-            }
-            tblClick();
-        }
-    })
-}
-function tblClick() {
+function tblClick1() {
     $("#tbl1>tr").click(function () {
+        console.log("tbl click")
         $("#saveBtn").attr('disabled', true);
         let custID = $(this).children().eq(0).text();
         let custName = $(this).children().eq(1).text();
@@ -213,6 +200,21 @@ function tblClick() {
         $(".dltBtn").attr('disabled', false);
     })
 }
+function addCustomerToTable() {
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/customer",
+        method:"GET",
+        success: function (resp) {
+            $("#tbl1").empty();
+            for (const customer of resp.data) {
+                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.contact}</td></tr>`;
+                $("#tbl1").append(row);
+            }
+            tblClick1();
+        }
+    })
+}
+
 function clearTextField() {
     $(".txtNIC").val("");
     $(".txtNAME").val("");
@@ -247,7 +249,7 @@ $(".updateBtn").click(function () {
             if(resp.status==200){
                 clearTextField();
                 addCustomerToTable();
-                tblClick();
+                tblClick1();
                 $("#saveBtn").attr('disabled', true);
                 $(".updateBtn").attr('disabled', true);
                 alert(resp.message);
@@ -317,7 +319,7 @@ function searchCustomer(temp) {
 $(".seeAllBtn").click(function () {
     clearTextField();
     addCustomerToTable();
-    tblClick();
+    tblClick1();
 })
 
 //============delete===========//
@@ -336,7 +338,7 @@ function deleteCustomer(temp) {
                 alert(resp.message)
                 clearTextField();
                 addCustomerToTable();
-                tblClick()
+                tblClick1()
             }else{
                 console.log(resp.data)
             }
@@ -354,5 +356,5 @@ function deleteCustomer(temp) {
 $(".refreshBtn").click(function () {
     clearTextField();
     addCustomerToTable();
-    tblClick();
+    tblClick1();
 })

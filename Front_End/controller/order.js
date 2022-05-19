@@ -76,60 +76,103 @@ $(".saveOrderBtn").click(function () {
     saveorder();
 
 })
-
 function saveorder() {
-    var tempItem1=finditem($("#selectItem").val());
-    var availableQty=tempItem1.qty;
+    var tempCustomerName=$(".customerSelection").val();
+    var tempItemName=$(".itemSelection").val();
     var requestedQty=$("#Quantity").val()*1;
-    if(requestedQty>availableQty){
-        alert("insufficient items");
-    }else {
-        //var itemName=checkItemAvailability($("#selectItem").val());
-        if (checkItemAvailability($("#selectItem").val())) {
-            var itemCode = tempItem1.code;
-            var itemName = tempItem1.name;
-            var itemPrice = tempItem1.price;
-            var itemQty = $("#Quantity").val()*1;
-            var totalPrice = itemPrice * itemQty;
-            for (var i = 0; i < orderDetail.length; i++) {
-                if (orderDetail[i].code == itemCode) {
-                    orderDetail[i].code = itemCode
-                    orderDetail[i].name = itemName;
-                    orderDetail[i].price = itemPrice;
-                    //var qty=itemQty*1;
-                    orderDetail[i].qty = orderDetail[i].qty + itemQty;
-                    orderDetail[i].totalPrice = orderDetail[i].totalPrice +totalPrice;
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/item",
+        method:"GET",
+        success: function (resp) {
+            for (var i=0;i<resp.data.length;i++) {
+                if(resp.data[i].name===tempItemName){
+                    var selectedItemCode=resp.data[i].code;
+                    var selectedItemName=resp.data[i].name;
+                    var selectedItemPrice=resp.data[i].price;
+                    var selectedItemQty=resp.data[i].qty;
+
+                    var totalPrice = selectedItemPrice * requestedQty;
+                    if(requestedQty>selectedItemQty){
+                        alert("insufficient items");
+                    }else {
+                        if (checkItemAvailability(tempItemName)) {
+                          /*  var itemCode = tempItem1.code;
+                            var itemName = tempItem1.name;
+                            var itemPrice = tempItem1.price;*/
+                            //var itemQty = $("#Quantity").val()*1;
+
+                            for (var i = 0; i < orderDetail.length; i++) {
+                                if (orderDetail[i].code == selectedItemCode) {
+                                    orderDetail[i].code = selectedItemCode
+                                    orderDetail[i].name = selectedItemName;
+                                    orderDetail[i].price = selectedItemPrice;
+                                    orderDetail[i].qty = orderDetail[i].qty + requestedQty;
+                                    orderDetail[i].totalPrice = orderDetail[i].totalPrice +totalPrice;
+                                }
+                            }
+                            addOrderToTable();
+                            //changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice, selectedItemQty-requestedQty);
+                            setTotalPriceToLable();
+                            return;
+                        } else {
+                           /* var itemCode = tempItem1.code;
+                            var itemName = tempItem1.name;
+                            var itemPrice = tempItem1.price;*/
+                           // var itemQty = $("#Quantity").val()*1;
+                            //var totalPrice = selectedItemPrice * requestedQty;
+
+                            var orderDetails = new OrderDetails(selectedItemCode, selectedItemName, selectedItemPrice, requestedQty, totalPrice);
+                            orderDetail.push(orderDetails);
+                            addOrderToTable();
+                            console.log(orderDetails)
+                            //changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice, selectedItemQty-requestedQty);
+                            setTotalPriceToLable();
+                            return;
+                        }
+                    }
                 }
             }
-            addOrderToTable();
-            changeQuantity(itemCode, itemQty);
-            setTotalPriceToLable();
-        } else {
-            var itemCode = tempItem1.code;
-            var itemName = tempItem1.name;
-            var itemPrice = tempItem1.price;
-            var itemQty = $("#Quantity").val()*1;
-            var totalPrice = itemPrice * itemQty;
-
-            var orderDetails = new OrderDetails(itemCode, itemName, itemPrice, itemQty, totalPrice);
-            orderDetail.push(orderDetails);
-            addOrderToTable();
-            console.log(item)
-            changeQuantity(itemCode, itemQty);
-            setTotalPriceToLable();
-
         }
-    }
+    })
+
+   // var tempItem1=finditem($("#selectItem").val());
+    //var availableQty=tempItem1.qty;
+
+
 }
-function changeQuantity(itemCode,itemQty) {
-    for(var i=0;i<item.length;i++){
+function changeQuantity(itemCode,itemName,ItemPrice,itemQty) {
+    var itemOB={
+        "code":itemCode,
+        "name":itemName,
+        "price":ItemPrice,
+        "qty":itemQty
+    }
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/item",
+        method: "PUT",
+        contentType:"application/json",
+        data: JSON.stringify(itemOB),
+        success: function (resp) {
+            if(resp.status==200){
+                setItemDetails();
+                console.log(item)
+            }else if (resp.status==400){
+                alert(resp.message);
+            }else{
+                alert(resp.data);
+            }
+        },
+        error:function (ob, errorStatus) {
+            console.log(ob)
+        }
+    })
+   /* for(var i=0;i<item.length;i++){
         if(item[i].code==itemCode){
             var currentQty=item[i].qty;
             item[i].qty=currentQty-itemQty;
         }
-    }
-    setItemDetails();
-    console.log(item)
+    }*/
+
 }
 function checkItemAvailability(itemName) {
     for(var i=0;i<orderDetail.length;i++){
@@ -287,18 +330,12 @@ function setItemDetails() {
                 }
             }
         })
-        /*var tempItem2=finditem(tempItemName);
-        $(".itemCode").val(tempItem2.code);
-        $(".itemName").val(tempItem2.name);
-        $(".itemPrice").val(tempItem2.price);
-        $(".itemQty").val(tempItem2.qty);
-        $(".itemCode,.itemName,.itemPrice,.itemQty").css("background-color"," #74b9ff");*/
-
     }else{
         alert("select item")
     }
 
 }
+/*
 function finditem(tempItemName) {
     for (var i=0;i<item.length;i++){
         if(item[i].name==tempItemName){
@@ -306,6 +343,7 @@ function finditem(tempItemName) {
         }
     }
 }
+*/
 
 function addOrderToTable() {
     $("#tbl3").empty();

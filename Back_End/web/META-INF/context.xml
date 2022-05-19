@@ -7,7 +7,7 @@
             password= "1234"
             driverClassName= "com.mysql.cj.jdbc.Driver"
             url= "jdbc:mysql://127.0.0.1:3306/java_ee_pos"
-            initialSize= "5"
-            maxTotal= "5"
+            initialSize= "15"
+            maxTotal= "15"
     ></Resource>
 </Context>

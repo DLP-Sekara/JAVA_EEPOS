@@ -318,7 +318,7 @@
     <!--=====================================ItemPage=============================================-->
     <section id="2ndPage">
         <section class="row">
-            <div class="col-11 col-lg-3" id="formFrame2">
+            <form class="col-11 col-lg-3" id="formFrame2">
                 <div class="badge text-wrap col-12"
                      style="color: #161B36;position: relative;top: 10px;font-size: 16px;">
                     Add New Item
@@ -326,21 +326,25 @@
                 <div class="f1 "><label class="form-label">Item Code</label><input aria-label=".form-control-sm example"
                                                                                    class="form-control form-control-sm"
                                                                                    id="txtItemCode"
+                                                                                   name="ItemCode"
                                                                                    placeholder="Item Code"
                                                                                    type="text"></div>
                 <div class="f1 "><label class="form-label">Item Name</label><input aria-label=".form-control-sm example"
                                                                                    class="form-control form-control-sm"
                                                                                    id="txtItemName"
+                                                                                   name="ItemName"
                                                                                    placeholder="Item Name"
                                                                                    type="text"></div>
                 <div class="f1 "><label class="form-label">Item Price</label><input
                         aria-label=".form-control-sm example" class="form-control form-control-sm"
                         id="txtItemPrice"
+                        name="ItemPrice"
                         placeholder="Item Price"
                         type="text"></div>
                 <div class="f1 "><label class="form-label">Item Quantity</label><input
                         aria-label=".form-control-sm example" class="form-control form-control-sm"
                         id="txtItemQuantity"
+                        name="ItemQty"
                         placeholder="Item Quantity"
                         type="text"></div>
                 <div class="d-flex justify-content-center">
@@ -353,7 +357,7 @@
                             class="fas fa-edit"></i> UPDATE
                     </button>
                 </div>
-            </div>
+            </form>
             <div class="col-11 col-lg-3 btnFrame"
                  style="border: 2px solid #bdc3c7; box-shadow: 0 0 7px -1px #161b36; border-radius: 10px">
                 <div class="f4 ">

@@ -133,9 +133,6 @@ function saveCustomer() {
     var custNic = $("#txtCustNic").val();
     var serialize = $("#formFrame1").serialize();
 
-    if (customerAvailability(custNic)) {
-        alert("Customer Already Exists")
-    } else {
         $.ajax({
         url: "http://localhost:8080/java_EE_pos/customer",
         method: "POST",
@@ -156,29 +153,8 @@ function saveCustomer() {
                 console.log(textStatus);
                 console.log(error);
             }
-        /*success: function (resp) {
-            if (resp.status == 200) {
-                alert(resp.message);
-                addCustomerToTable();
-                clearTextField();
-                $("#saveBtn").attr('disabled', true);
-            } else if (resp.status == 400) {
-                alert(resp.message);
-            } else {
-                alert(resp.data);
-            }
-            /!*  alert("successfully added");
-              addCustomerToTable();
-              clearTextField();
-              $("#saveBtn").attr('disabled', true);*!/
-        },
-        error: function (ob, textStatus, error) {
-            alert(ob);
-            alert(textStatus);
-            alert(error);
-        }*/
     })
-}
+
 }
 
 function customerAvailability(custNic) {

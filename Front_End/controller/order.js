@@ -201,7 +201,6 @@ function getCustomerNames() {
         url: "http://localhost:8080/java_EE_pos/customer",
         method:"GET",
         success: function (resp) {
-            console.log(resp.data)
             for (var i=0;i<resp.data.length;i++) {
                 $('.customerSelection').append($('<option>', { text:resp.data[i].name}));
             }
@@ -215,7 +214,6 @@ function getItemNames() {
         url: "http://localhost:8080/java_EE_pos/item",
         method:"GET",
         success: function (resp) {
-            console.log(resp.data)
             for (var i=0;i<resp.data.length;i++) {
                 $('.itemSelection').append($('<option>', { text:resp.data[i].name}));
             }
@@ -274,12 +272,27 @@ $(".OrderSeeAllBtn").click(function () {
 function setItemDetails() {
     var tempItemName=$(".itemSelection").val();
     if(tempItemName!="Select Item"){
-        var tempItem2=finditem(tempItemName);
+        $.ajax({
+            url: "http://localhost:8080/java_EE_pos/item",
+            method:"GET",
+            success: function (resp) {
+                for (var i=0;i<resp.data.length;i++) {
+                    if(resp.data[i].name===tempItemName){
+                        $(".itemCode").val(resp.data[i].code);
+                        $(".itemName").val(resp.data[i].name);
+                        $(".itemPrice").val(resp.data[i].price);
+                        $(".itemQty").val(resp.data[i].qty);
+                        $(".itemCode,.itemName,.itemPrice,.itemQty").css("background-color"," #74b9ff");
+                    }
+                }
+            }
+        })
+        /*var tempItem2=finditem(tempItemName);
         $(".itemCode").val(tempItem2.code);
         $(".itemName").val(tempItem2.name);
         $(".itemPrice").val(tempItem2.price);
         $(".itemQty").val(tempItem2.qty);
-        $(".itemCode,.itemName,.itemPrice,.itemQty").css("background-color"," #74b9ff");
+        $(".itemCode,.itemName,.itemPrice,.itemQty").css("background-color"," #74b9ff");*/
 
     }else{
         alert("select item")

@@ -262,32 +262,8 @@ $(".updateBtn").click(function () {
             console.log(ob)
         }
     })
-    /*let custNic = $(".txtNIC").val();
-    let custName = $(".txtNAME").val();
-    let custAddress = $(".txtADDRESS").val();
-    let custContact = $(".txtCONTACT").val();
-    var customerObj = new CustomerObject(custNic, custName, custAddress, custContact);
 
-    updateCustomer(tempCustomer, customerObj);
-
-    clearTextField();
-    addCustomerToTable();
-    tblClick();
-    $("#saveBtn").attr('disabled', true);
-    $(".updateBtn").attr('disabled', true);
-    console.log(customer);*/
 })
-
-function updateCustomer(tempCustomer, customerObj) {
-   /* for (var i = 0; i < customer.length; i++) {
-        if (customer[i].id == tempCustomer) {
-            customer[i].id = customerObj.id;
-            customer[i].name = customerObj.name;
-            customer[i].address = customerObj.address;
-            customer[i].contact = customerObj.contact;
-        }
-    }*/
-}
 
 //============search & getAll===========//
 $(".custSearchField").keyup(function (event) {
@@ -371,35 +347,12 @@ function deleteCustomer(temp) {
             console.log(t)
         }
     })
-    /*for (var i = 0; i < customer.length; i++) {
-        if (customer[i].id == temp) {
-            customer.splice(i,1);
-        }
-    }*/
+
 }
 
 //==============others=============//
 $(".refreshBtn").click(function () {
     clearTextField();
     addCustomerToTable();
-    $("#tbl1>tr").click(function () {
-        $("#saveBtn").attr('disabled', true);
-        let custID = $(this).children().eq(0).text();
-        let custName = $(this).children().eq(1).text();
-        let custAddrress = $(this).children().eq(2).text();
-        let custContact = $(this).children().eq(3).text();
-
-        $(".txtNIC").val(custID);
-        $(".txtNAME").val(custName);
-        $(".txtADDRESS").val(custAddrress);
-        $(".txtCONTACT").val(custContact);
-
-        $(".txtCustNicUp").val(custID);
-        $(".txtCustNameUp").val(custName);
-        $(".txtCustAddressUp").val(custAddrress);
-        $(".txtCustContactUp").val(custContact);
-
-        $(".updateBtn").attr('disabled', false);
-        $(".dltBtn").attr('disabled', false);
-    })
+    tblClick();
 })

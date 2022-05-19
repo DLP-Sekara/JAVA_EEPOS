@@ -61,7 +61,6 @@ public class Item_Servlet extends HttpServlet {
         String ItemName = req.getParameter("ItemName");
         String ItemPrice = req.getParameter("ItemPrice");
         String ItemQty = req.getParameter("ItemQty");
-        System.out.println(req);
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         try {

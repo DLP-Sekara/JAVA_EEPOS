@@ -244,7 +244,7 @@ function makeOrder() {
         })
         var orderObject = new OrderObject(oid, date, selectedCustomer, totalPrice, cash, discount);
         order.push(orderObject);
-        setOrderDetailsToDropDown();
+       // setOrderDetailsToDropDown();
         //clearOrderDetails();
         console.log("order")
         console.log(order)
@@ -276,6 +276,7 @@ function saveOrderDetail(oid) {
             success: function (res) {
                 if (res.status == 200) {
                     console.log("order details completed")
+
                     clearOrderDetails();
                 } else {
                     alert(res.data);
@@ -288,6 +289,7 @@ function saveOrderDetail(oid) {
             }
         })
     }
+    setOrderDetailsToDropDown();
 }
 function getOrderDetail() {
     var orderDetails = [];
@@ -334,9 +336,16 @@ function getItemNames() {
 function setOrderDetailsToDropDown() {
     $('.orderIdDropDownContent').empty();
     $(".orderIdDropDownContent").append($('<option>', {text: "Select Order"}))
-    for (var i = 0; i < order.length; i++) {
-        $(".orderIdDropDownContent").append($('<option>', {text: order[i].oID}))
-    }
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/order",
+        method:"GET",
+        success: function (resp) {
+            for (var i = 0; i < resp.data.length; i++) {
+                $(".orderIdDropDownContent").append($('<option>', {text: resp.data[i].oid}))
+            }
+        }
+    })
+
 
     $(".orderIdDropDownContent>option").css('padding-left', '10em')
 }
@@ -345,11 +354,24 @@ $(".orderIdDropDownContent").change(function () {
     var tempOid = $(".orderIdDropDownContent").val();
     var tempOD = getOrderInfo(tempOid);
     $("#tbl3").empty();
-    $("#selectCustomer").val(tempOD.custName);
+    //$("#selectCustomer").val(tempOD.custName);
+    $.ajax({
+        url: "http://localhost:8080/java_EE_pos/orderDetails",
+        method:"GET",
+        success: function (resp) {
+            for (var i = 0; i < resp.data.length; i++) {
+                if(resp.data[i].OrderID===tempOid){
+                    let row3 = `<tr><td>${resp.data[i].ItemCode}</td><td>${resp.data[i].ItemName}</td><td>${resp.data[i].UnitPrice}</td><td>${resp.data[i].OrderQty}</td><td>Rs. ${resp.data[i].TotalPrice}</td></tr>`;
+                    $("#tbl3").append(row3);
+                }
+            }
+        }
+    })
+    /*
     for (var i = 0; i < tempOD.OrderDetails.length; i++) {
         let row3 = `<tr><td>${tempOD.OrderDetails[i].code}</td><td>${tempOD.OrderDetails[i].name}</td><td>${tempOD.OrderDetails[i].price}</td><td>${tempOD.OrderDetails[i].qty}</td><td>Rs. ${tempOD.OrderDetails[i].totalPrice}</td></tr>`;
         $("#tbl3").append(row3);
-    }
+    }*/
 })
 
 function getOrderInfo(tempOid) {

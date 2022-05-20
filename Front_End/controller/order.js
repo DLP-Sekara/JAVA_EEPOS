@@ -112,7 +112,7 @@ function saveorder() {
                             }
                             addOrderToTable();
                             var tempQty1=selectedItemQty-requestedQty;
-                            //changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice,tempQty1);
+                            changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice,tempQty1);
                             setTotalPriceToLable();
                             return;
                         } else {
@@ -121,7 +121,7 @@ function saveorder() {
                             addOrderToTable();
                             console.log(orderDetails)
                             var tempQty2=selectedItemQty-requestedQty;
-                            //changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice, tempQty2);
+                            changeQuantity(selectedItemCode,selectedItemName,selectedItemPrice, tempQty2);
                             setTotalPriceToLable();
                             return;
                         }
@@ -134,14 +134,13 @@ function saveorder() {
     //changeQuantity(tempItemCode,tempItemName,tempItemPrice, requestedQty);
 
 }
-/*
 function changeQuantity(itemCode, itemName, ItemPrice, itemQty) {
     console.log(itemCode+"  &  "+itemName)
     var itemOB = {
         "code": itemCode,
         "name": itemName,
-        "price": ItemPrice,
-        "qty": itemQty
+        "price": ItemPrice+"",
+        "qty": itemQty+""
     }
     $.ajax({
         url: "http://localhost:8080/java_EE_pos/item",
@@ -163,7 +162,7 @@ function changeQuantity(itemCode, itemName, ItemPrice, itemQty) {
         }
 
     })
-}*/
+}
 
 function checkItemAvailability(itemName) {
     for (var i = 0; i < orderDetail.length; i++) {

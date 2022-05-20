@@ -415,8 +415,10 @@ function clearField() {
 
 $(".txtCash").keyup(function () {
     if (checkValidation()) {
-        if (totalLbl != 0) {
-            $(".purchaseBtn").attr('disabled', false)
+        if (checkDiscountValidation()) {
+            if (totalLbl != 0) {
+                $(".purchaseBtn").attr('disabled', false)
+            }
         }
     } else {
         $(".purchaseBtn").attr('disabled', true)
@@ -472,4 +474,3 @@ function setDiscount() {
     totalLbl2 = sub;
     setBalance(sub);
 }
-

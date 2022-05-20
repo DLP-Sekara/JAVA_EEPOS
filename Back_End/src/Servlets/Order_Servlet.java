@@ -74,7 +74,7 @@ public class Order_Servlet extends HttpServlet {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
 
-          try {
+        try {
             Connection con = ds.getConnection();
             String query="INSERT INTO Orders VALUES(?,?,?,?,?,?)";
 

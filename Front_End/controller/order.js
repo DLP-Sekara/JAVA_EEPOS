@@ -213,7 +213,7 @@ function makeOrder() {
         let totalPrice = totalLbl2+"";
         let cash = $(".txtCash").val();
         let discount = $(".txtDiscount").val();
-        let orderDetail = getOrderDetail();
+        //let orderDetail = getOrderDetail();
 
         var orderOB = {
             "oID": oid,
@@ -231,6 +231,7 @@ function makeOrder() {
             success: function (res) {
                 if (res.status == 200) {
                     alert(res.message);
+                    saveOrderDetail(oid)
                 } else {
                     alert(res.data);
                 }
@@ -244,7 +245,7 @@ function makeOrder() {
         var orderObject = new OrderObject(oid, date, selectedCustomer, totalPrice, cash, discount);
         order.push(orderObject);
         setOrderDetailsToDropDown();
-        clearOrderDetails();
+        //clearOrderDetails();
         console.log("order")
         console.log(order)
         clearField();
@@ -255,7 +256,39 @@ function makeOrder() {
         })
     }
 }
+function saveOrderDetail(oid) {
+    console.log("detail option ekata awaa")
+    for (var i=0;i<orderDetail.length;i++) {
 
+        var orderDetailOB = {
+            "OrderID": oid,
+            "ItemCode": orderDetail[i].code+"",
+            "ItemName": orderDetail[i].name+"",
+            "UnitPrice": orderDetail[i].price+"",
+            "OrderQty": orderDetail[i].qty+"",
+            "TotalPrice": orderDetail[i].totalPrice+""
+        }
+        $.ajax({
+            url: "http://localhost:8080/java_EE_pos/orderDetails",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(orderDetailOB),
+            success: function (res) {
+                if (res.status == 200) {
+                    console.log("order details completed")
+                    clearOrderDetails();
+                } else {
+                    alert(res.data);
+                }
+            },
+            error: function (ob, textStatus, error) {
+                console.log(ob);
+                console.log(textStatus);
+                console.log(error);
+            }
+        })
+    }
+}
 function getOrderDetail() {
     var orderDetails = [];
     for (var i = 0; i < orderDetail.length; i++) {

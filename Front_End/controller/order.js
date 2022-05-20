@@ -131,11 +131,10 @@ function saveorder() {
             //changeQuantity(tempItemCode,tempItemName,tempItemPrice, requestedQty);
         }
     })
-    console.log(tempItemCode+"   "+tempItemPrice)
     //changeQuantity(tempItemCode,tempItemName,tempItemPrice, requestedQty);
 
 }
-
+/*
 function changeQuantity(itemCode, itemName, ItemPrice, itemQty) {
     console.log(itemCode+"  &  "+itemName)
     var itemOB = {
@@ -164,7 +163,7 @@ function changeQuantity(itemCode, itemName, ItemPrice, itemQty) {
         }
 
     })
-}
+}*/
 
 function checkItemAvailability(itemName) {
     for (var i = 0; i < orderDetail.length; i++) {
@@ -180,7 +179,7 @@ function setTotalPriceToLable() {
     }
     console.log(total)
     $("#totalpriceLbl").text("Rs. " + total)
-    $("#subTotalpriceLbl").text("Rs. " + total)
+    $("#subTotalpriceLbl").text( total)
     totalLbl = total
     totalLbl2 = total
     total = 0;
@@ -200,20 +199,46 @@ function makeOrder() {
         let oid = "Order-" + makeOrderId();
         let date = today;
         let selectedCustomer = $("#selectCustomer").val();
-        let totalPrice = $("#subTotalpriceLbl").text();
+        let totalPrice = totalLbl2+"";
         let cash = $(".txtCash").val();
         let discount = $(".txtDiscount").val();
         let orderDetail = getOrderDetail();
 
-        var orderObject = new OrderObject(oid, date, selectedCustomer, totalPrice, cash, discount, orderDetail);
+        var orderOB = {
+            "oID": oid,
+            "date": date,
+            "custName": selectedCustomer,
+            "totalPrice": totalPrice,
+            "cash": cash,
+            "discount": discount,
+        }
+        $.ajax({
+            url: "http://localhost:8080/java_EE_pos/order",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(orderOB),
+            success: function (res) {
+                if (res.status == 200) {
+                    alert(res.message);
+                } else {
+                    alert(res.data);
+                }
+
+            },
+            error: function (ob, textStatus, error) {
+                console.log(ob);
+                console.log(textStatus);
+                console.log(error);
+            }
+        })
+        var orderObject = new OrderObject(oid, date, selectedCustomer, totalPrice, cash, discount);
         order.push(orderObject);
         setOrderDetailsToDropDown();
         clearOrderDetails();
         console.log("order")
         console.log(order)
         clearField();
-
-        alert("Your order has been successfully added")
+        //alert("Your order has been successfully added")
         $(".txtCash").css('border', '2px solid #d8dde2')
         $(".txtDiscount").css('border', '2px solid #d8dde2')
     }

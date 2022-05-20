@@ -5,5 +5,4 @@
     this.totalPrice= totalPrice;
     this.cash= cash;
     this.discount= discount;
-    this.OrderDetails=orderDetail;
 }

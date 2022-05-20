@@ -21,23 +21,27 @@ public class Order_Servlet extends HttpServlet {
     DataSource ds;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-   /*     try {
+        try {
             resp.setContentType("application/json");
             Connection connection = ds.getConnection();
-            ResultSet rst=connection.prepareStatement("Select * from Item").executeQuery();
+            ResultSet rst=connection.prepareStatement("Select * from Orders").executeQuery();
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
             while (rst.next()){
-                String code = rst.getString(1);
-                String name = rst.getString(2);
-                String price = rst.getString(3);
-                String qty = rst.getString(4);
+                String oid = rst.getString(1);
+                String date = rst.getString(2);
+                String custName = rst.getString(3);
+                String totalPrice = rst.getString(4);
+                String cash = rst.getString(4);
+                String discount = rst.getString(4);
 
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("code",code);
-                objectBuilder.add("name",name);
-                objectBuilder.add("price",price);
-                objectBuilder.add("qty",qty);
+                objectBuilder.add("oid",oid);
+                objectBuilder.add("date",date);
+                objectBuilder.add("custName",custName);
+                objectBuilder.add("totalPrice",totalPrice);
+                objectBuilder.add("cash",cash);
+                objectBuilder.add("discount",discount);
 
                 arrayBuilder.add(objectBuilder.build());
             }
@@ -51,7 +55,7 @@ public class Order_Servlet extends HttpServlet {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

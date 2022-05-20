@@ -196,7 +196,18 @@ function makeOrder() {
         $(".txtCash").css('border', '2px solid red')
         alert("Insufficient balance")
     } else {
-        let oid = "Order-" + makeOrderId();
+        $.ajax({
+            url: "http://localhost:8080/java_EE_pos/order",
+            method:"GET",
+            success: function (resp) {
+                var orderCount =[];
+                //orderCount.splice(0,orderCount.length);
+                orderCount.length=0;
+           for(var i = 0; i < resp.data.length; i++){
+               orderCount.push(resp.data[i]);
+           }
+                console.log("order count eka="+orderCount)
+        let oid = "Order-" + orderCount.length++;
         let date = today;
         let selectedCustomer = $("#selectCustomer").val();
         let totalPrice = totalLbl2+"";
@@ -223,7 +234,6 @@ function makeOrder() {
                 } else {
                     alert(res.data);
                 }
-
             },
             error: function (ob, textStatus, error) {
                 console.log(ob);
@@ -241,6 +251,8 @@ function makeOrder() {
         //alert("Your order has been successfully added")
         $(".txtCash").css('border', '2px solid #d8dde2')
         $(".txtDiscount").css('border', '2px solid #d8dde2')
+            }
+        })
     }
 }
 
@@ -387,8 +399,8 @@ function getItemName(order1) {
 }
 
 function makeOrderId() {
-    var orderCount = order.length;
-    return orderCount++;
+    /*var orderCount = order.length;
+    return orderCount++;*/
 }
 
 function clearField() {

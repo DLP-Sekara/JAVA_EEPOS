@@ -3,10 +3,10 @@
 javaScript POS system with JAVAEE backend
 ## Screenshots
 
-###01
+### 01
 ![](readme/1.png)
-###02
+### 02
 ![](readme/2.png)
-###03
+### 03
 ![](readme/3.png)
 

@@ -9,6 +9,7 @@ var codeRegEx = /^[0-9]{4}$/;
 var itemNameRegEx = /^[A-z ]{3,20}$/;
 var priceRegEx = /^[0-9]{2,10}$/;
 var qtyRegEx = /^[0-9]{1,20}$/;
+addItemToTable()
 
 $('#txtItemCode,#txtItemName,#txtItemPrice,#txtItemQuantity').on('keydown', function (event) {
     if (event.key == "Tab") {

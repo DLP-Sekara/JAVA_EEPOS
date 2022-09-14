@@ -122,7 +122,7 @@ function btnAction1() {
         return false;
     }
 }
-
+addCustomerToTable()
 //=============save===============//
 
 $(".btn1").click(function () {
